@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HexelPrime — Trading Education</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0A0F1E;
+      --slate:   #1C2438;
+      --gold:    #F5C842;
+      --gold-dim:#C9A02E;
+      --white:   #EEF0F5;
+      --silver:  #8A93A8;
+      --accent:  #2A3A60;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      height: 68px;
+      background: rgba(10,15,30,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(245,200,66,0.15);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+    }
+    .nav-logo span { color: var(--white); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--silver); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500; letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--navy);
+      font-weight: 700; font-size: 0.85rem;
+      padding: 0.5rem 1.25rem; border-radius: 4px;
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-dim); }
+
+    /* ── TICKER TAPE ── */
+    .ticker-wrap {
+      position: fixed; top: 68px; left: 0; right: 0; z-index: 99;
+      background: var(--slate);
+      border-bottom: 1px solid rgba(245,200,66,0.08);
+      overflow: hidden; height: 32px;
+    }
+    .ticker-track {
+      display: flex; align-items: center;
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-item {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+      padding: 0 2rem; color: var(--silver);
+    }
+    .ticker-item .up   { color: #4ADE80; }
+    .ticker-item .down { color: #F87171; }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      padding: 160px 5vw 80px;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(245,200,66,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,200,66,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-glow {
+      position: absolute; top: 20%; right: 10%;
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(245,200,66,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 680px; }
+    .hero-eyebrow {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.16em;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: inline-block;
+      width: 28px; height: 2px; background: var(--gold);
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      line-height: 0.95; letter-spacing: 0.02em;
+      color: var(--white); margin-bottom: 1.4rem;
+    }
+    .hero h1 .gold { color: var(--gold); }
+    .hero p {
+      font-size: 1.1rem; font-weight: 400; color: var(--silver);
+      max-width: 520px; margin-bottom: 2.4rem; line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: var(--navy);
+      font-weight: 700; font-size: 0.9rem;
+      padding: 0.9rem 2rem; border-radius: 4px;
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: transform 0.15s, background 0.15s;
+    }
+    .btn-primary:hover { background: var(--gold-dim); transform: translateY(-1px); }
+    .btn-ghost {
+      border: 1px solid rgba(245,200,66,0.35); color: var(--gold);
+      font-weight: 600; font-size: 0.9rem;
+      padding: 0.9rem 2rem; border-radius: 4px;
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); background: rgba(245,200,66,0.06); }
+
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem; color: var(--gold); letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .stat-lbl {
+      font-size: 0.72rem; color: var(--silver);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.25rem;
+    }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .sec-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: 0.04em; line-height: 1.05;
+      color: var(--white);
+    }
+    .sec-sub {
+      color: var(--silver); font-size: 1rem;
+      max-width: 520px; margin-top: 0.75rem;
+    }
+
+    /* ── WHY SECTION ── */
+    .why { padding: 90px 5vw; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5px;
+      margin-top: 3.5rem;
+      border: 1.5px solid rgba(245,200,66,0.12);
+    }
+    .why-card {
+      background: var(--slate);
+      padding: 2.2rem;
+      transition: background 0.2s;
+    }
+    .why-card:hover { background: var(--accent); }
+    .why-icon {
+      width: 42px; height: 42px;
+      background: rgba(245,200,66,0.1);
+      border: 1px solid rgba(245,200,66,0.25);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; margin-bottom: 1.2rem;
+    }
+    .why-card h3 {
+      font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem;
+      color: var(--white);
+    }
+    .why-card p { font-size: 0.875rem; color: var(--silver); line-height: 1.65; }
+
+    /* ── COURSES ── */
+    .courses { padding: 90px 5vw; background: var(--slate); }
+    .courses-header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; }
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .course-card {
+      background: var(--navy);
+      border: 1px solid rgba(245,200,66,0.10);
+      border-radius: 6px; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .course-card:hover {
+      border-color: rgba(245,200,66,0.4);
+      transform: translateY(-3px);
+    }
+    .course-band {
+      height: 5px;
+    }
+    .band-gold     { background: var(--gold); }
+    .band-blue     { background: #4F81F5; }
+    .band-green    { background: #4ADE80; }
+    .course-body { padding: 1.8rem; }
+    .course-tag {
+      display: inline-block;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 0.2rem 0.6rem;
+      border-radius: 3px; margin-bottom: 1rem;
+    }
+    .tag-beg { background: rgba(74,222,128,0.12); color: #4ADE80; }
+    .tag-int { background: rgba(79,129,245,0.12); color: #4F81F5; }
+    .tag-adv { background: rgba(245,200,66,0.12); color: var(--gold); }
+    .course-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 0.04em;
+      margin-bottom: 0.6rem; color: var(--white);
+    }
+    .course-card p { font-size: 0.875rem; color: var(--silver); margin-bottom: 1.4rem; }
+    .course-meta {
+      display: flex; gap: 1.2rem;
+      font-size: 0.75rem; color: var(--silver);
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .course-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .course-link {
+      display: block; margin-top: 1.4rem;
+      text-align: center; padding: 0.7rem;
+      border: 1px solid rgba(245,200,66,0.3);
+      border-radius: 4px;
+      color: var(--gold); font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: background 0.2s;
+    }
+    .course-link:hover { background: rgba(245,200,66,0.08); }
+
+    /* ── HOW IT WORKS ── */
+    .how { padding: 90px 5vw; }
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0; margin-top: 3.5rem; position: relative;
+    }
+    .step {
+      padding: 2rem 1.8rem 2rem;
+      position: relative;
+    }
+    .step:not(:last-child)::after {
+      content: '→';
+      position: absolute; right: -0.5rem; top: 2.5rem;
+      font-size: 1.2rem; color: rgba(245,200,66,0.3);
+    }
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem; color: rgba(245,200,66,0.15);
+      letter-spacing: 0.04em; line-height: 1;
+      margin-bottom: 0.8rem;
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .step p  { font-size: 0.85rem; color: var(--silver); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { padding: 90px 5vw; background: var(--slate); }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .testi-card {
+      background: var(--navy);
+      border-left: 3px solid var(--gold);
+      padding: 1.8rem; border-radius: 4px;
+    }
+    .testi-quote {
+      font-size: 0.9rem; color: var(--white); line-height: 1.7;
+      margin-bottom: 1.2rem; font-style: italic;
+    }
+    .testi-author { font-size: 0.78rem; font-weight: 700; color: var(--gold); }
+    .testi-role   { font-size: 0.72rem; color: var(--silver); margin-top: 0.15rem; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      padding: 90px 5vw;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-banner-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse at center, rgba(245,200,66,0.07) 0%, transparent 70%);
+    }
+    .cta-banner h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+    }
+    .cta-banner p {
+      color: var(--silver); max-width: 480px;
+      margin: 0 auto 2.4rem; font-size: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--slate);
+      padding: 50px 5vw 28px;
+      border-top: 1px solid rgba(245,200,66,0.1);
+    }
+    .footer-top {
+      display: flex; justify-content: space-between;
+      flex-wrap: wrap; gap: 2.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-brand .nav-logo { font-size: 1.4rem; }
+    .footer-brand p {
+      font-size: 0.82rem; color: var(--silver);
+      margin-top: 0.6rem; max-width: 240px;
+    }
+    .footer-col h4 {
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.5rem; }
+    .footer-col a {
+      font-size: 0.85rem; color: var(--silver);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 0.5rem;
+      padding-top: 1.5rem;
+      font-size: 0.75rem; color: var(--silver);
+    }
+    .footer-bottom a { color: var(--silver); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--gold); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero-stats { flex-direction: column; gap: 1.5rem; }
+      .step::after { display: none; }
+      .courses-header { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track { animation: none; }
+    }
+	.nav-logo{
+		width:100px;
+		height:100px;
+	}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><img src="hexelpngimage.png"></div>
+  <ul class="nav-links">
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#how">How it Works</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+  </ul>
+  <a href="#courses" class="nav-cta">Start Learning</a>
+</nav>
+
+<!-- TICKER TAPE -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Professional Trading Education</div>
+    <h1>
+      MASTER THE<br>
+      <span class="gold">MARKETS.</span><br>
+      TRADE WITH<br>EDGE.
+    </h1>
+    <p>
+      HexelPrime delivers structured, mentor-led education for traders at every level —
+      from reading your first candlestick to building a systematic trading strategy.
+    </p>
+    <div class="hero-actions">
+      <a href="#courses" class="btn-primary">Browse Courses</a>
+      <a href="#how" class="btn-ghost">See How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">12K+</div>
+        <div class="stat-lbl">Active Traders</div>
+      </div>
+      <div>
+        <div class="stat-val">40+</div>
+        <div class="stat-lbl">Courses Available</div>
+      </div>
+      <div>
+        <div class="stat-val">94%</div>
+        <div class="stat-lbl">Completion Rate</div>
+      </div>
+    </div>
+
+    <!-- LIVE MARKQ -->
+    <div style="margin-top: 1.4rem; display:flex; gap:1rem; align-items:baseline; flex-wrap:wrap;">
+      <div class="stat-val" style="font-size:2rem;">MARKQ <span id="markq-live">--</span></div>
+      <div class="stat-lbl" style="margin-top:0; text-transform:none; letter-spacing:0.08em;">LIVE (updates every 1s)</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY HEXELPRIME -->
+<section class="why" id="why">
+  <div class="sec-label">Why HexelPrime</div>
+  <div class="sec-title">Built for Traders,<br>Not Tourists</div>
+  <p class="sec-sub">We skip the fluff. Every module is built around what actually moves a P&L.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">📊</div>
+      <h3>Live Market Analysis</h3>
+      <p>Weekly live sessions where instructors break down real trades, current setups, and market structure in real time.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🎯</div>
+      <h3>Strategy-First Curriculum</h3>
+      <p>Every course is built around a repeatable edge — not theory. You leave with a playbook, not just notes.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🧠</div>
+      <h3>Trading Psychology</h3>
+      <p>Dedicated modules on discipline, risk management, and the mental framework behind consistent execution.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">💬</div>
+      <h3>Community & Mentorship</h3>
+      <p>Access to a private trader's community, peer accountability groups, and direct mentor feedback on your journal.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📱</div>
+      <h3>Learn Anywhere</h3>
+      <p>All content is mobile-ready with downloadable resources so you can study between sessions, on your schedule.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🔒</div>
+      <h3>Lifetime Access</h3>
+      <p>Pay once, access forever. Course updates, new modules, and revised editions all included at no extra cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section class="courses" id="courses">
+  <div class="courses-header">
+    <div>
+      <div class="sec-label">Learning Paths</div>
+      <div class="sec-title">Find Your Course</div>
+    </div>
+    <a href="#" class="btn-ghost">View All 40+ Courses</a>
+  </div>
+  <div class="courses-grid">
+
+    <div class="course-card">
+      <div class="course-band band-green"></div>
+      <div class="course-body">
+        <span class="course-tag tag-beg">Beginner</span>
+        <h3>Foundations of Trading</h3>
+        <p>Markets, instruments, candlesticks, order types, and your first trade. Zero experience needed.</p>
+        <div class="course-meta">
+          <span>📚 18 Lessons</span>
+          <span>⏱ 6 hrs</span>
+          <span>🏅 Certificate</span>
+        </div>
+        <a href="#" class="course-link">Enroll Now →</a>
+      </div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-band band-blue"></div>
+      <div class="course-body">
+        <span class="course-tag tag-int">Intermediate</span>
+        <h3>Technical Analysis Masterclass</h3>
+        <p>Chart patterns, indicators, trend analysis, support/resistance, and confluence trading.</p>
+        <div class="course-meta">
+          <span>📚 32 Lessons</span>
+          <span>⏱ 14 hrs</span>
+          <span>🏅 Certificate</span>
+        </div>
+        <a href="#" class="course-link">Enroll Now →</a>
+      </div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-band band-gold"></div>
+      <div class="course-body">
+        <span class="course-tag tag-adv">Advanced</span>
+        <h3>Institutional Order Flow</h3>
+        <p>Smart money concepts, liquidity sweeps, ICT methodology, and reading the institutional footprint.</p>
+        <div class="course-meta">
+          <span>📚 45 Lessons</span>
+          <span>⏱ 22 hrs</span>
+          <span>🏅 Certificate</span>
+        </div>
+        <a href="#" class="course-link">Enroll Now →</a>
+      </div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-band band-blue"></div>
+      <div class="course-body">
+        <span class="course-tag tag-int">Intermediate</span>
+        <h3>Risk & Trade Management</h3>
+        <p>Position sizing, risk-reward ratios, drawdown management, and building a consistent process.</p>
+        <div class="course-meta">
+          <span>📚 22 Lessons</span>
+          <span>⏱ 9 hrs</span>
+          <span>🏅 Certificate</span>
+        </div>
+        <a href="#" class="course-link">Enroll Now →</a>
+      </div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-band band-gold"></div>
+      <div class="course-body">
+        <span class="course-tag tag-adv">Advanced</span>
+        <h3>Algorithmic Trading Basics</h3>
+        <p>Build your first trading bot, backtest strategies, and automate rule-based entries and exits.</p>
+        <div class="course-meta">
+          <span>📚 28 Lessons</span>
+          <span>⏱ 16 hrs</span>
+          <span>🏅 Certificate</span>
+        </div>
+        <a href="#" class="course-link">Enroll Now →</a>
+      </div>
+    </div>
+
+    <div class="course-card">
+      <div class="course-band band-green"></div>
+      <div class="course-body">
+        <span class="course-tag tag-beg">Beginner</span>
+        <h3>Crypto Trading 101</h3>
+        <p>Spot vs futures, wallets, exchanges, on-chain basics, and your first crypto trade explained step by step.</p>
+        <div class="course-meta">
+          <span>📚 20 Lessons</span>
+          <span>⏱ 7 hrs</span>
+          <span>🏅 Certificate</span>
+        </div>
+        <a href="#" class="course-link">Enroll Now →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="sec-label">The Process</div>
+  <div class="sec-title">How HexelPrime Works</div>
+  <div class="how-steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Choose Your Path</h3>
+      <p>Pick a course matched to your experience and market interest — forex, crypto, equities, or futures.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Learn at Your Pace</h3>
+      <p>Video lessons, reading material, and quizzes structured to build real comprehension, not just familiarity.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Practice & Journal</h3>
+      <p>Paper trade, track your decisions, and submit journals for mentor feedback on your developing edge.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Go Live with Confidence</h3>
+      <p>Graduate from simulated to live markets with a clear strategy, risk rules, and community at your back.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="sec-label">Student Stories</div>
+  <div class="sec-title">What Our Traders Say</div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <p class="testi-quote">"HexelPrime's Order Flow course completely changed how I read a chart. For the first time I wasn't just guessing — I had an actual framework."</p>
+      <div class="testi-author">Rahul M.</div>
+      <div class="testi-role">Forex Day Trader · Mumbai</div>
+    </div>
+    <div class="testi-card">
+      <p class="testi-quote">"I tried three other platforms before HexelPrime. The difference is the live sessions — seeing a real trade broken down in real time is irreplaceable."</p>
+      <div class="testi-author">Priya S.</div>
+      <div class="testi-role">Crypto Swing Trader · Pune</div>
+    </div>
+    <div class="testi-card">
+      <p class="testi-quote">"The risk management module alone saved my account. I was over-leveraging for two years before I understood position sizing properly."</p>
+      <div class="testi-author">James O.</div>
+      <div class="testi-role">Equities Trader · London</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <div class="cta-banner-glow"></div>
+  <div class="sec-label">Get Started Today</div>
+  <h2>YOUR EDGE STARTS HERE</h2>
+  <p>Join 12,000+ traders building real skills with a curriculum that doesn't waste your time.</p>
+  <a href="#courses" class="btn-primary" style="font-size:1rem; padding:1rem 2.5rem;">Browse All Courses</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo">Hexel<span>Prime</span></div>
+      <p>Professional trading education for the modern market. Learn. Trade. Grow.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Courses</h4>
+      <ul>
+        <li><a href="#">Beginners</a></li>
+        <li><a href="#">Intermediate</a></li>
+        <li><a href="#">Advanced</a></li>
+        <li><a href="#">Crypto Trading</a></li>
+        <li><a href="#">Algo Trading</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Instructors</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Disclaimer</a></li>
+        <li><a href="#">Refund Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 HexelPrime Education. All rights reserved.</span>
+    <span>Trading involves risk. Past performance does not guarantee future results.</span>
+  </div>
+</footer>
+
+<script>
+  // ── TICKER TAPE DATA ──
+  const tickers = [
+    { sym: "EUR/USD", price: "1.0842", chg: "+0.12%", up: true },
+    { sym: "BTC/USD", price: "67,420", chg: "+2.34%", up: true },
+    { sym: "GBP/USD", price: "1.2715", chg: "-0.08%", up: false },
+    { sym: "ETH/USD", price: "3,512", chg: "+1.87%", up: true },
+    { sym: "USD/JPY", price: "155.32", chg: "+0.22%", up: true },
+    { sym: "GOLD",    price: "2,341", chg: "-0.45%", up: false },
+    { sym: "S&P 500", price: "5,212", chg: "+0.61%", up: true },
+    { sym: "USD/INR", price: "83.42", chg: "-0.03%", up: false },
+    { sym: "SOL/USD", price: "172.50", chg: "+3.10%", up: true },
+    { sym: "OIL/WTI", price: "78.90", chg: "-0.90%", up: false },
+  ];
+
+  function buildTicker() {
+    const track = document.getElementById('ticker');
+    // Double the items for seamless loop
+    const allItems = [...tickers, ...tickers];
+    track.innerHTML = allItems.map(t => `
+      <span class="ticker-item">
+        <strong style="color:#EEF0F5">${t.sym}</strong>
+        &nbsp;${t.price}&nbsp;
+        <span class="${t.up ? 'up' : 'down'}">${t.chg}</span>
+      </span>
+    `).join('');
+  }
+  buildTicker();
+
+  // ── SMOOTH NAV SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── SCROLL REVEAL ──
+  const revealEls = document.querySelectorAll('.why-card, .course-card, .testi-card, .step');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+
+  // ── LIVE MARKQ ──
+  // Simple live-updating value for UI; replace generator with real data if available.
+  const markqEl = document.getElementById('markq-live');
+  function randomWalkMarkq(prev) {
+    const drift = (Math.random() - 0.5) * 0.12; // small change
+    const next = prev + drift;
+    return Math.max(0, next);
+  }
+  let markq = 50.0;
+  if (markqEl) {
+    markqEl.textContent = markq.toFixed(2);
+    setInterval(() => {
+      markq = randomWalkMarkq(markq);
+      markqEl.textContent = markq.toFixed(2);
+    }, 1000);
+  }
+</script>
+</body>
+</html>
